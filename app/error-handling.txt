@@ -1,0 +1,74 @@
+Error handling in Next.js routes is an important aspect of building robust applications. Here are the key ways to handle errors in Next.js routing:
+
+1. Error.js Files:
+- Create error.js files in route segments to handle errors gracefully
+- These files act as error boundaries catching errors in nested routes
+- Can display custom error UI while keeping the rest of the app functional
+
+Example:
+```jsx
+// app/error.js
+'use client'
+
+export default function Error({
+  error,
+  reset,
+}) {
+  return (
+    <div>
+      <h2>Something went wrong!</h2>
+      <button onClick={() => reset()}>Try again</button>
+    </div>
+  )
+}
+```
+
+2. not-found.js:
+- Create not-found.js files to handle 404 errors
+- Triggered when notFound() is thrown or no matching route exists
+- Allows custom 404 page styling and content
+
+Example:
+```jsx
+// app/not-found.js
+export default function NotFound() {
+  return (
+    <div>
+      <h2>404 Not Found</h2>
+      <p>Could not find requested resource</p>
+    </div>
+  )
+}
+```
+
+3. Global Error Handling:
+- global-error.js at root handles application-level errors
+- Replaces entire page when root errors occur
+- Good for catastrophic error scenarios
+
+4. Try-Catch Blocks:
+- Use traditional try-catch in route handlers and server actions
+- Handle specific error cases with custom logic
+- Return appropriate error responses
+
+Example:
+```jsx
+async function getData() {
+  try {
+    const res = await fetch('https://api.example.com/data')
+    if (!res.ok) throw new Error('Failed to fetch data')
+    return res.json()
+  } catch (error) {
+    console.error(error)
+    throw new Error('Failed to fetch data')
+  }
+}
+```
+
+Best practices:
+- Always provide user-friendly error messages
+- Log errors on the server side
+- Implement proper error boundaries
+- Handle both client and server-side errors
+- Use appropriate HTTP status codes
+- Consider error recovery mechanisms
